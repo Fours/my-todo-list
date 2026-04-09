@@ -82,6 +82,10 @@ function App() {
     ))
   }
 
+  function renameList(listId: string, name: string) {
+    setLists(prev => prev.map(l => l.id === listId ? { ...l, name } : l))
+  }
+
   const selectedList = lists.find(l => l.id === selectedId) ?? null
 
   return (
@@ -100,6 +104,7 @@ function App() {
             onAddItem={(text) => addItem(selectedList.id, text)}
             onToggleItem={(itemId) => toggleItem(selectedList.id, itemId)}
             onDeleteItem={(itemId) => deleteItem(selectedList.id, itemId)}
+            onRenameList={(name) => renameList(selectedList.id, name)}
           />
         ) : (
           <div className="empty-state">

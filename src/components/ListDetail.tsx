@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { MdEdit, MdCheck, MdClose } from 'react-icons/md'
 import TodoItemComponent from './TodoItem'
 import type { TodoList } from '../App'
 
@@ -7,10 +8,43 @@ interface Props {
   onAddItem: (text: string) => void
   onToggleItem: (itemId: string) => void
   onDeleteItem: (itemId: string) => void
+  onRenameList: (name: string) => void
 }
 
-export default function ListDetail({ list, onAddItem, onToggleItem, onDeleteItem }: Props) {
+export default function ListDetail({ list, onAddItem, onToggleItem, onDeleteItem, onRenameList }: Props) {
   const [text, setText] = useState('')
+  const [editing, setEditing] = useState(false)
+  const [editName, setEditName] = useState('')
+  const editInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (editing) {
+      editInputRef.current?.focus()
+      editInputRef.current?.select()
+    }
+  }, [editing])
+
+  function startEdit() {
+    setEditName(list.name)
+    setEditing(true)
+  }
+
+  function commitEdit() {
+    const trimmed = editName.trim()
+    if (trimmed && trimmed !== list.name) {
+      onRenameList(trimmed)
+    }
+    setEditing(false)
+  }
+
+  function cancelEdit() {
+    setEditing(false)
+  }
+
+  function handleEditKeyDown(e: React.KeyboardEvent) {
+    if (e.key === 'Enter') commitEdit()
+    if (e.key === 'Escape') cancelEdit()
+  }
 
   function handleAdd() {
     const trimmed = text.trim()
@@ -29,7 +63,30 @@ export default function ListDetail({ list, onAddItem, onToggleItem, onDeleteItem
   return (
     <div className="list-detail">
       <div className="list-detail-header">
-        <h2 className="list-detail-title">{list.name}</h2>
+        {editing ? (
+          <div className="list-title-edit">
+            <input
+              ref={editInputRef}
+              className="list-title-input"
+              value={editName}
+              onChange={e => setEditName(e.target.value)}
+              onKeyDown={handleEditKeyDown}
+            />
+            <button className="list-title-action-btn" onClick={commitEdit} aria-label="Save name">
+              <MdCheck size={18} />
+            </button>
+            <button className="list-title-action-btn" onClick={cancelEdit} aria-label="Cancel">
+              <MdClose size={18} />
+            </button>
+          </div>
+        ) : (
+          <div className="list-title-row">
+            <h2 className="list-detail-title">{list.name}</h2>
+            <button className="list-edit-btn" onClick={startEdit} aria-label="Edit list name">
+              <MdEdit size={18} />
+            </button>
+          </div>
+        )}
         <p className="list-detail-count">
           {total === 0
             ? 'No items yet'

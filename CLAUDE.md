@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## App Overview
 
-A multi-list todo app. Users can create named todo lists, add items to each list, mark items done (strikethrough), and delete items. All data is persisted to `localStorage` under the key `todo-lists`.
+A multi-list todo app. Users can create named todo lists, add items to each list, mark items done (strikethrough), delete items, and rename todo lists. All data is persisted to `localStorage` under the key `todo-lists`.
 
 ### Data model
 ```typescript
