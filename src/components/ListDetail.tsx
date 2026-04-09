@@ -9,9 +9,10 @@ interface Props {
   onToggleItem: (itemId: string) => void
   onDeleteItem: (itemId: string) => void
   onRenameList: (name: string) => void
+  onEditItem: (itemId: string, text: string) => void
 }
 
-export default function ListDetail({ list, onAddItem, onToggleItem, onDeleteItem, onRenameList }: Props) {
+export default function ListDetail({ list, onAddItem, onToggleItem, onDeleteItem, onRenameList, onEditItem }: Props) {
   const [text, setText] = useState('')
   const [editing, setEditing] = useState(false)
   const [editName, setEditName] = useState('')
@@ -117,6 +118,7 @@ export default function ListDetail({ list, onAddItem, onToggleItem, onDeleteItem
               item={item}
               onToggle={() => onToggleItem(item.id)}
               onDelete={() => onDeleteItem(item.id)}
+              onEdit={(text) => onEditItem(item.id, text)}
             />
           ))
         )}

@@ -86,6 +86,14 @@ function App() {
     setLists(prev => prev.map(l => l.id === listId ? { ...l, name } : l))
   }
 
+  function editItem(listId: string, itemId: string, text: string) {
+    setLists(prev => prev.map(l =>
+      l.id === listId
+        ? { ...l, items: l.items.map(i => i.id === itemId ? { ...i, text } : i) }
+        : l
+    ))
+  }
+
   const selectedList = lists.find(l => l.id === selectedId) ?? null
 
   return (
@@ -105,6 +113,7 @@ function App() {
             onToggleItem={(itemId) => toggleItem(selectedList.id, itemId)}
             onDeleteItem={(itemId) => deleteItem(selectedList.id, itemId)}
             onRenameList={(name) => renameList(selectedList.id, name)}
+            onEditItem={(itemId, text) => editItem(selectedList.id, itemId, text)}
           />
         ) : (
           <div className="empty-state">

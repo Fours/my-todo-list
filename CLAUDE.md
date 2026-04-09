@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## App Overview
 
-A multi-list todo app. Users can create named todo lists, add items to each list, mark items done (strikethrough), delete items, and rename todo lists. All data is persisted to `localStorage` under the key `todo-lists`.
+A multi-list todo app. Users can create named todo lists, add items to each list, mark items done (strikethrough), delete items, edit the text of items, and rename todo lists. All data is persisted to `localStorage` under the key `todo-lists`.
 
 ### Data model
 ```typescript
@@ -16,8 +16,8 @@ interface TodoList  { id: string; name: string; items: TodoItem[]; createdAt: nu
 ```
 App.tsx              — state owner; reads/writes localStorage; renders two-panel layout
   Sidebar.tsx        — list navigator; inline "New List" form (Enter to confirm, Escape to cancel)
-  ListDetail.tsx     — selected list; add-item input (Enter to add); remaining-item count
-    TodoItem.tsx     — circular done-toggle, strikethrough text, hover-reveal trash button
+  ListDetail.tsx     — selected list; add-item input (Enter to add); remaining-item count; hover-reveal edit on list name
+    TodoItem.tsx     — circular done-toggle, strikethrough text, hover-reveal edit and trash button
 ```
 
 ### Key behaviors
@@ -40,7 +40,6 @@ No test runner is configured.
 ## Stack
 
 - **React 19** + **TypeScript** + **Vite 8**
-- **Tailwind CSS v4** (via `@tailwindcss/vite` plugin — no `tailwind.config.js`, configured in CSS)
 - **react-icons v5** for icons
 - Entry: `src/main.tsx` → `src/App.tsx`
 

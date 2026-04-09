@@ -485,3 +485,62 @@ body {
   color: var(--color-brand);
   background: #ffe4ea;
 }
+
+.todo-edit-btn {
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-circle);
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+}
+
+.todo-item:hover .todo-edit-btn {
+  opacity: 1;
+}
+
+.todo-edit-btn:hover {
+  color: var(--color-brand);
+  background: #ffe4ea;
+}
+
+.todo-edit-input {
+  flex: 1;
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  border: none;
+  border-bottom: 2px solid var(--color-brand);
+  background: transparent;
+  outline: none;
+  min-width: 0;
+  padding: 0 2px;
+}
+
+.todo-action-btn {
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-circle);
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: color 0.15s, background 0.15s;
+}
+
+.todo-action-btn:hover {
+  color: var(--color-brand);
+  background: #ffe4ea;
+}
