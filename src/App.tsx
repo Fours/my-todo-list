@@ -94,6 +94,10 @@ function App() {
     ))
   }
 
+  function reorderItems(listId: string, newItems: TodoItem[]) {
+    setLists(prev => prev.map(l => l.id === listId ? { ...l, items: newItems } : l))
+  }
+
   const selectedList = lists.find(l => l.id === selectedId) ?? null
 
   return (
@@ -114,6 +118,7 @@ function App() {
             onDeleteItem={(itemId) => deleteItem(selectedList.id, itemId)}
             onRenameList={(name) => renameList(selectedList.id, name)}
             onEditItem={(itemId, text) => editItem(selectedList.id, itemId, text)}
+            onReorderItems={(newItems) => reorderItems(selectedList.id, newItems)}
           />
         ) : (
           <div className="empty-state">

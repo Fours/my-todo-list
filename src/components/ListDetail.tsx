@@ -1,7 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { MdEdit, MdCheck, MdClose } from 'react-icons/md'
+import { DndContext, closestCenter } from '@dnd-kit/core'
+import type { DragEndEvent } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy, arrayMove, useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import TodoItemComponent from './TodoItem'
-import type { TodoList } from '../App'
+import type { TodoItem, TodoList } from '../App'
 
 interface Props {
   list: TodoList
@@ -10,9 +14,38 @@ interface Props {
   onDeleteItem: (itemId: string) => void
   onRenameList: (name: string) => void
   onEditItem: (itemId: string, text: string) => void
+  onReorderItems: (newItems: TodoItem[]) => void
 }
 
-export default function ListDetail({ list, onAddItem, onToggleItem, onDeleteItem, onRenameList, onEditItem }: Props) {
+interface SortableItemProps {
+  item: TodoItem
+  onToggle: () => void
+  onDelete: () => void
+  onEdit: (text: string) => void
+}
+
+function SortableTodoItem({ item, onToggle, onDelete, onEdit }: SortableItemProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: item.id })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  }
+  return (
+    <div ref={setNodeRef} style={style}>
+      <TodoItemComponent
+        item={item}
+        onToggle={onToggle}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        dragHandleListeners={listeners}
+        dragHandleAttributes={attributes}
+      />
+    </div>
+  )
+}
+
+export default function ListDetail({ list, onAddItem, onToggleItem, onDeleteItem, onRenameList, onEditItem, onReorderItems }: Props) {
   const [text, setText] = useState('')
   const [editing, setEditing] = useState(false)
   const [editName, setEditName] = useState('')
@@ -56,6 +89,14 @@ export default function ListDetail({ list, onAddItem, onToggleItem, onDeleteItem
 
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === 'Enter') handleAdd()
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+    const oldIndex = list.items.findIndex(i => i.id === active.id)
+    const newIndex = list.items.findIndex(i => i.id === over.id)
+    onReorderItems(arrayMove(list.items, oldIndex, newIndex))
   }
 
   const remaining = list.items.filter(i => !i.done).length
@@ -112,15 +153,19 @@ export default function ListDetail({ list, onAddItem, onToggleItem, onDeleteItem
         {list.items.length === 0 ? (
           <p className="todo-empty">Add your first item above.</p>
         ) : (
-          list.items.map(item => (
-            <TodoItemComponent
-              key={item.id}
-              item={item}
-              onToggle={() => onToggleItem(item.id)}
-              onDelete={() => onDeleteItem(item.id)}
-              onEdit={(text) => onEditItem(item.id, text)}
-            />
-          ))
+          <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={list.items.map(i => i.id)} strategy={verticalListSortingStrategy}>
+              {list.items.map(item => (
+                <SortableTodoItem
+                  key={item.id}
+                  item={item}
+                  onToggle={() => onToggleItem(item.id)}
+                  onDelete={() => onDeleteItem(item.id)}
+                  onEdit={(text) => onEditItem(item.id, text)}
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
         )}
       </div>
     </div>

@@ -511,6 +511,35 @@ body {
   background: #ffe4ea;
 }
 
+.todo-drag-btn {
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-circle);
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  color: var(--color-text-secondary);
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+}
+
+.todo-drag-btn:active {
+  cursor: grabbing;
+}
+
+.todo-item:hover .todo-drag-btn {
+  opacity: 1;
+}
+
+.todo-drag-btn:hover {
+  color: var(--color-text-primary);
+  background: #e6e6e6;
+}
+
 .todo-edit-input {
   flex: 1;
   font-family: var(--font);

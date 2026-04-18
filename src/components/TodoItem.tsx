@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import { FiCheck, FiTrash2, FiEdit2, FiX } from 'react-icons/fi'
+import { MdDragIndicator } from 'react-icons/md'
+import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
+import type { DraggableAttributes } from '@dnd-kit/core'
 import type { TodoItem } from '../App'
 
 interface Props {
@@ -7,9 +10,11 @@ interface Props {
   onToggle: () => void
   onDelete: () => void
   onEdit: (text: string) => void
+  dragHandleListeners?: SyntheticListenerMap
+  dragHandleAttributes?: DraggableAttributes
 }
 
-export default function TodoItemComponent({ item, onToggle, onDelete, onEdit }: Props) {
+export default function TodoItemComponent({ item, onToggle, onDelete, onEdit, dragHandleListeners, dragHandleAttributes }: Props) {
   const [editing, setEditing] = useState(false)
   const [editText, setEditText] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
@@ -88,6 +93,14 @@ export default function TodoItemComponent({ item, onToggle, onDelete, onEdit }: 
             title="Delete item"
           >
             <FiTrash2 size={14} />
+          </button>
+          <button
+            className="todo-drag-btn"
+            title="Drag to reorder"
+            {...dragHandleListeners}
+            {...dragHandleAttributes}
+          >
+            <MdDragIndicator size={16} />
           </button>
         </>
       )}
