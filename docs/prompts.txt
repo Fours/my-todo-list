@@ -1,0 +1,45 @@
+1.
+
+/init
+
+2.
+
+Create a "todo list" app. Use the design system specified in DESIGN.md. Save the todo list data in local storage. The app should support multiple todo lists. 
+
+When creating a new todo list the user can name the list. The user can add a new todo item which is added to the list. The user can mark a todo item as "done" in which case the item is crossed out (strike-through text). The user can delete todo items to remove them from the list.
+
+Create a plan first and run it by me before coding.
+
+3.
+
+Take the knowledge you've gained about the app and add it to CLAUDE.md. Add a summary of the app to the top of the file.
+
+4.
+
+/clear
+
+5.
+
+Add the ability to update the name of a todo list. On the list detail page, next to the name of the list, add an "edit" icon. Clicking on the icon should let the user edit the name and save their changes.
+
+6.
+
+Add the ability to update the text of a todo item. On the list detail page, on the TodoItem component, add a new icon to the left of the trash/delete icon. The new icon should be an edit icon.
+
+Clicking the edit icon on a todo item lets the user edit the text of the item and save their changes.
+
+Create a plan first and run it by me.
+
+7.
+
+/clear
+
+8.
+
+Add the ability to reorder todo items using drag and drop. Add an icon to the right of the delete icon. The icon should conote that the user can drag and drop the todo item.
+
+When the icon is clicked the user can drag and drop the todo item to a new spot in the list. When the user hovers over the icon change the cursor to the hand/grab cursor. 
+
+Save the new order of the todo list when a todo item is moved. Find a popular react drag-and-drop library and install it and use it to achieve the results.
+
+Create a plan first and get my approval.
