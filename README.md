@@ -6,4 +6,4 @@ npm run dev
 ```
 
 ## About
-This is a todo app built in React using Claude Code
+This is a browser "todo" list app using React, Typescript, and local storage for persistence - with AI-assist from Claude Code.
